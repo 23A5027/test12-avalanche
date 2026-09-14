@@ -1,0 +1,210 @@
+/* ============================================================
+   Investment Page - Modern Dark Theme
+   ============================================================ */
+
+.investment-page {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.investment-page .page-header {
+  margin-bottom: var(--space-8);
+}
+
+.investment-page .page-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-warm);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-2);
+}
+
+.investment-page .page-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* ── Investment Card ── */
+
+.investment-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ── Quiz ID Badge ── */
+
+.quiz-id-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--accent-cyan-dim);
+  border-radius: var(--radius-full);
+  color: var(--accent-cyan);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-6);
+}
+
+/* ── Form Section ── */
+
+.invest-section {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.invest-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.invest-section-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.invest-section-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Token Info ── */
+
+.token-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.token-info-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.token-info-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+}
+
+.token-info-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-cyan);
+}
+
+/* ── Input ── */
+
+.investment-card .form-control,
+.investment-card input[type="text"] {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  padding: var(--space-3) var(--space-4) !important;
+  font-family: var(--font-main) !important;
+  font-size: var(--font-size-base) !important;
+  transition: all var(--transition-base) !important;
+  width: 100%;
+}
+
+.investment-card .form-control:focus,
+.investment-card input[type="text"]:focus {
+  outline: none !important;
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 0 0 3px var(--accent-cyan-dim) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+/* ── Radio Options ── */
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.radio-option:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--glass-border-hover);
+}
+
+.radio-option.selected {
+  background: var(--accent-cyan-dim);
+  border-color: rgba(0, 212, 255, 0.3);
+  color: var(--accent-cyan);
+}
+
+.radio-option input[type="radio"] {
+  accent-color: var(--accent-cyan);
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Submit ── */
+
+.invest-submit-area {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--glass-border);
+}
+
+.btn-invest-submit {
+  width: 100%;
+  background: var(--gradient-warm);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-invest-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+  filter: brightness(1.1);
+}
+
+/* ── Responsive ── */
+
+@media screen and (max-width: 576px) {
+  .investment-card {
+    padding: var(--space-5);
+  }
+
+  .token-info {
+    grid-template-columns: 1fr;
+  }
+}

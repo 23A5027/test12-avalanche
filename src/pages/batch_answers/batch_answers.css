@@ -1,0 +1,108 @@
+.batch-answer-page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.batch-answer-page-nav {
+  margin-top: var(--space-3);
+}
+
+.batch-answer-card,
+.batch-answer-report {
+  padding: var(--space-5);
+}
+
+.batch-answer-toolbar {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.batch-answer-count {
+  color: #fff;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+}
+
+.batch-answer-note,
+.batch-answer-empty {
+  color: rgba(255,255,255,0.76);
+  line-height: 1.7;
+}
+
+.batch-answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.batch-answer-list,
+.batch-answer-report-list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.batch-answer-item {
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.04);
+  padding: var(--space-4);
+}
+
+.batch-answer-item-header {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--space-4);
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.batch-answer-item-index {
+  color: #7dd3fc;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 4px;
+}
+
+.batch-answer-item-title {
+  color: #fff;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.batch-answer-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.batch-answer-report-item {
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  display: grid;
+  gap: 4px;
+}
+
+.batch-answer-report-item.is-ok {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.24);
+  color: #dcfce7;
+}
+
+.batch-answer-report-item.is-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.24);
+  color: #fee2e2;
+}
+
+@media screen and (max-width: 576px) {
+  .batch-answer-item-header,
+  .batch-answer-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

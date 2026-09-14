@@ -1,0 +1,210 @@
+/* ============================================================
+   Login Page - Modern Dark Theme
+   ============================================================ */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-4);
+}
+
+/* Decorative background orbs */
+.login-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.login-bg-orb--1 {
+  width: 300px;
+  height: 300px;
+  background: var(--accent-cyan);
+  top: -100px;
+  right: -50px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.login-bg-orb--2 {
+  width: 250px;
+  height: 250px;
+  background: var(--accent-purple);
+  bottom: -80px;
+  left: -60px;
+  animation: float 8s ease-in-out infinite reverse;
+}
+
+.login-bg-orb--3 {
+  width: 200px;
+  height: 200px;
+  background: var(--accent-pink);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float 7s ease-in-out infinite;
+  opacity: 0.2;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card {
+  padding: var(--space-10) var(--space-8);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.login-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.login-title-icon {
+  -webkit-text-fill-color: initial;
+  font-size: var(--font-size-4xl);
+}
+
+.login-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Wallet Options */
+.login-wallets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.wallet-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  width: 100%;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+}
+
+.wallet-option:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--accent-cyan);
+  box-shadow: var(--shadow-glow-cyan);
+  transform: translateY(-2px);
+}
+
+.wallet-option--connecting {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.wallet-option-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.wallet-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wallet-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.wallet-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.wallet-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+}
+
+.wallet-desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.wallet-badge {
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.connecting-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--glass-border);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+}
+
+/* Error Message */
+.login-error {
+  background: var(--accent-red-dim);
+  color: var(--accent-red);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--glass-border);
+}
+
+.login-footer-text {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+/* MetaMask SVG styling override */
+.Metamask-logo {
+  stroke: none;
+  fill: currentColor;
+}

@@ -1,0 +1,86 @@
+/* ============================================================
+   Bottom Navigation Bar - Glass Morphism
+   ============================================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-navbar);
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+  padding: var(--space-1) 0;
+  padding-bottom: max(var(--space-1), env(safe-area-inset-bottom));
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 var(--space-2);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-tertiary);
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.nav-item:hover {
+  color: var(--text-secondary);
+  background: var(--glass-bg);
+}
+
+.nav-item--active {
+  color: var(--accent-cyan) !important;
+}
+
+.nav-item--active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 3px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-full);
+}
+
+.nav-icon {
+  font-size: 20px; /* アイコンを少し小さく */
+  transition: transform var(--transition-base);
+}
+
+.nav-item:hover .nav-icon {
+  transform: translateY(-2px);
+}
+
+.nav-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.02em;
+}
+
+/* Desktop: ナビバーは底部に保持しつつ幅を制限 */
+@media screen and (min-width: 769px) {
+  .nav-inner {
+    max-width: 600px;
+  }
+
+  .nav-item {
+    padding: var(--space-1) var(--space-4);
+  }
+}

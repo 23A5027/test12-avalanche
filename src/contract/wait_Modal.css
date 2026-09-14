@@ -1,0 +1,110 @@
+/* ============================================================
+   Wait Modal & Network Modal - Modern Dark Theme
+   ============================================================ */
+
+.modal-overlay,
+.network-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-content-box,
+.network-modal-content {
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  padding: var(--space-10) var(--space-8);
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 640px) {
+  .modal-overlay,
+  .network-modal-overlay {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .network-modal-content,
+  .modal-content-box {
+    max-height: calc(100dvh - 24px);
+  }
+}
+
+/* Transaction Loading Ring */
+.tx-loading {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-8);
+}
+
+.tx-ring {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tx-ring-inner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--accent-cyan);
+  border-right-color: var(--accent-purple);
+  border-radius: 50%;
+}
+
+.tx-status {
+  margin-bottom: var(--space-8);
+}
+
+.tx-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.tx-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Network Modal Icon */
+.network-modal-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-4);
+}
+
+/* Legacy overlay support */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+}

@@ -1,0 +1,84 @@
+{
+  "homepage": "https://23A5027.github.io/test12-avalanche",
+  "name": "test2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "@uiw/react-md-editor": "^3.23.6",
+    "bootstrap": "^5.2.3",
+    "html-react-parser": "^3.0.15",
+    "marked": "^4.3.0",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
+    "react-bootstrap-range-slider": "^3.0.8",
+    "react-csv": "^2.2.2",
+    "react-datepicker": "^4.11.0",
+    "react-datetime": "^3.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "react-markdown": "^8.0.7",
+    "react-moment": "^1.1.3",
+    "react-redux": "^8.0.5",
+    "react-responsive": "^9.0.2",
+    "react-router-dom": "^6.30.2",
+    "react-select": "^5.7.2",
+    "redux": "^4.2.1",
+    "viem": "^2.48.4",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "postbuild": "node -e \"require('fs').copyFileSync('build/index.html','build/404.html')\"",
+    "live:signal": "node live-signal-server.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build  GENERATE_SOURCEMAP=false",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 12",
+      "ios_saf >= 12",
+      "android >= 81"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "overrides": {
+    "@babel/runtime": "^7.26.10",
+    "@remix-run/router": "1.23.2",
+    "diff": "^5.2.2",
+    "yaml": "^1.10.3"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "baseline-browser-mapping": "^2.10.21",
+    "caniuse-lite": "^1.0.30001790",
+    "gh-pages": "^6.0.0",
+    "react-scripts": "^5.0.1",
+    "solc": "^0.8.34",
+    "typescript": "^4.9.5"
+  }
+}

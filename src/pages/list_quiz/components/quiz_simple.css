@@ -1,0 +1,203 @@
+/* ============================================================
+   Quiz Card - Modern Glass Morphism
+   ============================================================ */
+
+.quiz-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.quiz-card {
+  position: relative;
+  padding: var(--space-5);
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.quiz-card--interactive {
+  cursor: pointer;
+}
+
+.quiz-card--interactive:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}
+
+.quiz-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.quiz-card.glow-unanswered::before {
+  background: var(--gradient-cool);
+  opacity: 1;
+}
+
+.quiz-card.glow-correct::before {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+  opacity: 1;
+}
+
+.quiz-card.glow-incorrect::before {
+  background: linear-gradient(90deg, var(--accent-red), var(--accent-pink));
+  opacity: 1;
+}
+
+.quiz-card.glow-answered::before {
+  background: var(--gradient-primary);
+  opacity: 1;
+}
+
+.quiz-card-inner {
+  display: flex;
+  gap: var(--space-4);
+}
+
+/* Thumbnail */
+.quiz-thumbnail {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--glass-bg);
+}
+
+.quiz-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content */
+.quiz-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.quiz-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: var(--line-height-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.quiz-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-2);
+  line-height: var(--line-height-normal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Time Display */
+.quiz-time {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.quiz-time-icon {
+  font-size: 12px;
+}
+
+.time-active {
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+}
+
+.time-pending {
+  background: var(--accent-yellow-dim);
+  color: var(--accent-yellow);
+}
+
+.time-ended {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-tertiary);
+}
+
+/* Meta Info Row */
+.quiz-meta {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.quiz-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quiz-meta-label {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.quiz-meta-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+/* Indicators */
+.quiz-indicator {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: var(--font-weight-semibold);
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.quiz-indicator--paid {
+  background: var(--accent-red-dim);
+  color: var(--accent-red);
+}
+
+.quiz-indicator--reward {
+  background: var(--accent-blue-dim);
+  color: var(--accent-blue);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 576px) {
+  .quiz-thumbnail {
+    width: 44px;
+    height: 44px;
+  }
+
+  .quiz-meta {
+    gap: var(--space-3);
+  }
+}

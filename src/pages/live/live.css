@@ -1,0 +1,809 @@
+.live-page {
+    padding: var(--space-4);
+}
+
+.board-container {
+    display: grid;
+    gap: var(--space-4);
+}
+
+.board-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-6);
+    background:
+        radial-gradient(circle at top right, rgba(255, 196, 0, 0.12), transparent 32%),
+        linear-gradient(135deg, rgba(8, 26, 48, 0.98), rgba(11, 50, 84, 0.92));
+}
+
+.board-kicker {
+    color: var(--accent-yellow);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.board-title {
+    margin: 0 0 12px;
+}
+
+.board-description {
+    margin: 0;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.8;
+}
+
+.board-status-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.board-status-pill {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.board-status-pill.is-connected {
+    border-color: rgba(76, 175, 80, 0.45);
+    background: rgba(76, 175, 80, 0.12);
+}
+
+.board-status-pill.is-disconnected {
+    border-color: rgba(244, 67, 54, 0.45);
+    background: rgba(244, 67, 54, 0.12);
+}
+
+.board-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+}
+
+.board-main-column {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+}
+
+.board-reactions-strip {
+    padding: var(--space-5);
+    display: grid;
+    gap: var(--space-4);
+}
+
+.board-reactions-header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    align-items: center;
+}
+
+.reaction-session-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.reaction-session-input {
+    min-width: 220px;
+}
+
+.reaction-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-3);
+}
+
+.reaction-chip {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.reaction-chip.is-active,
+.reaction-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(0, 212, 255, 0.28);
+    background: rgba(0, 212, 255, 0.12);
+}
+
+.board-sidebar {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3);
+}
+
+.board-panel {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.board-panel--compact {
+    padding: 14px 16px;
+}
+
+.board-panel--compact .board-panel-title {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.board-panel--compact .board-panel-text,
+.board-panel--compact .board-rule-list {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.board-chat-toolbar {
+    width: min(100%, 920px);
+    position: relative;
+    z-index: 4;
+}
+
+.board-chat-toolbar-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+
+.board-chat-toolbar-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.board-chat-toolbar-copy {
+    min-width: 0;
+}
+
+.board-chat-toolbar-minimized {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.board-chat-toolbar-collapsed {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.board-chat-toolbar-collapsed-title {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.board-chat-toolbar-current {
+    margin-top: 14px;
+}
+
+.board-chat-toolbar-body {
+    margin-top: 14px;
+    display: grid;
+    gap: 14px;
+    position: relative;
+    z-index: 5;
+}
+
+.board-chat-toolbar-section {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.board-chat-toolbar-label {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.board-chat-restore-row {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.board-chat-toolbar-toggle {
+    border: 1px solid rgba(0, 212, 255, 0.24);
+    background: rgba(0, 212, 255, 0.16);
+    color: #f4fbff;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.board-chat-toolbar-toggle.is-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.board-chat-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    background: rgba(0, 212, 255, 0.16);
+    color: #f4fbff;
+    border: 1px solid rgba(0, 212, 255, 0.24);
+}
+
+.board-chat-toggle:hover,
+.board-chat-toolbar-toggle:hover {
+    background: rgba(0, 212, 255, 0.24);
+    color: #ffffff;
+}
+
+.board-session-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.board-session-input {
+    min-width: 0;
+    width: 100%;
+}
+
+.board-panel-title {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.board-panel-text {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.board-rule-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-secondary);
+    display: grid;
+    gap: 8px;
+}
+
+.board-pinned-notice {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.board-pinned-user {
+    color: var(--accent-cyan);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.board-pinned-text {
+    color: var(--text-primary);
+    line-height: 1.75;
+}
+
+.board-teacher-tools {
+    display: grid;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.board-textarea {
+    min-height: 96px;
+    resize: vertical;
+}
+
+.board-teacher-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.board-question-list {
+    display: grid;
+    gap: 10px;
+}
+
+.board-session-history {
+    display: grid;
+    gap: 10px;
+}
+
+.board-lecture-selector {
+    display: block;
+    margin-bottom: 0;
+}
+
+.board-lecture-selector-copy {
+    min-width: 0;
+}
+
+.board-lecture-selector-controls {
+    min-width: 0;
+    width: 100%;
+    position: relative;
+    z-index: 6;
+}
+
+.board-lecture-select {
+    min-width: 0;
+    width: 100%;
+    position: relative;
+    z-index: 7;
+}
+
+.board-lecture-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 255, 255, 0.04));
+    border: 1px solid rgba(0, 212, 255, 0.18);
+    margin-bottom: 14px;
+}
+
+.board-lecture-summary-main {
+    min-width: 0;
+    display: grid;
+    gap: 8px;
+}
+
+.board-lecture-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    background: rgba(0, 212, 255, 0.12);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.board-lecture-title {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.4;
+}
+
+.board-lecture-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.board-lecture-state {
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.board-lecture-state.is-live {
+    color: #d9ffe7;
+    background: rgba(76, 175, 80, 0.14);
+    border: 1px solid rgba(76, 175, 80, 0.24);
+}
+
+.board-lecture-state.is-archive {
+    color: #ffe6b8;
+    background: rgba(255, 179, 0, 0.12);
+    border: 1px solid rgba(255, 179, 0, 0.22);
+}
+
+.board-lecture-chip-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.board-lecture-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.board-lecture-chip:hover,
+.board-lecture-chip.is-active {
+    transform: translateY(-1px);
+    background: rgba(0, 212, 255, 0.12);
+    border-color: rgba(0, 212, 255, 0.26);
+}
+
+.board-lecture-chip-label {
+    font-weight: 700;
+}
+
+.board-lecture-chip-count {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.board-session-history-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.board-session-reaction-values {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.board-question-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.14);
+}
+
+.board-question-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--accent-cyan);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.board-question-text {
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.board-superchat-panel {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.board-superchat-user {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.board-superchat-amount {
+    color: var(--accent-yellow);
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.board-superchat-text {
+    color: var(--text-primary);
+    line-height: 1.7;
+}
+
+.board-chat {
+    padding: 0;
+    overflow: visible;
+}
+
+.board-chat-header {
+    padding: var(--space-5);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.board-chat-subtitle {
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+}
+
+.board-chat-body {
+    display: grid;
+    grid-template-rows: auto minmax(420px, 1fr) auto;
+    min-height: 640px;
+}
+
+.board-chat-feed {
+    padding: var(--space-4);
+    background: linear-gradient(180deg, rgba(4, 16, 30, 0.96), rgba(6, 22, 42, 0.94));
+    min-height: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.board-chat-input {
+    padding: var(--space-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.board-chat-collapsed {
+    padding: var(--space-8);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.reaction-guide-card {
+    margin: 0 0 16px;
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(255, 255, 255, 0.04));
+    border: 1px solid rgba(0, 212, 255, 0.16);
+}
+
+.reaction-guide-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    margin-bottom: 10px;
+}
+
+.reaction-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.reaction-guide-item {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reaction-guide-card.is-teacher {
+    display: grid;
+    gap: 14px;
+}
+
+.reaction-timeline-card {
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reaction-timeline-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.reaction-timeline-empty {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.reaction-timeline-list {
+    display: grid;
+    gap: 8px;
+}
+
+.reaction-timeline-item {
+    display: grid;
+    gap: 6px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.reaction-timeline-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.9fr);
+    gap: 12px;
+    align-items: start;
+}
+
+.reaction-timeline-main {
+    display: grid;
+    gap: 6px;
+}
+
+.reaction-timeline-time {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+}
+
+.reaction-timeline-values {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.reaction-timeline-memo {
+    display: grid;
+    gap: 6px;
+}
+
+.reaction-timeline-delete {
+    justify-self: end;
+    border: 1px solid rgba(255, 132, 132, 0.55);
+    background: rgba(120, 24, 24, 0.35);
+    color: #ffd9d9;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.reaction-timeline-delete:hover {
+    background: rgba(160, 36, 36, 0.5);
+}
+
+.reaction-timeline-memo-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.reaction-timeline-memo-input {
+    min-width: 0;
+}
+
+@media screen and (max-width: 960px) {
+    .board-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .board-hero {
+        flex-direction: column;
+    }
+
+    .board-status-group {
+        justify-content: flex-start;
+    }
+
+    .reaction-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reaction-guide-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reaction-timeline-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .live-page {
+        padding: var(--space-3);
+    }
+
+    .board-hero,
+    .board-sidebar,
+    .board-chat-header,
+    .board-chat-feed,
+    .board-chat-input {
+        padding: var(--space-3);
+    }
+
+    .board-chat-body {
+        min-height: 520px;
+    }
+
+    .board-chat-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .board-reactions-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .board-lecture-selector,
+    .board-lecture-summary {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .board-chat-toolbar-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .board-chat-toolbar-actions,
+    .board-chat-toolbar-collapsed,
+    .board-chat-toolbar-minimized,
+    .board-session-actions {
+        align-items: stretch;
+    }
+
+    .board-session-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .board-chat-toolbar {
+        width: 100%;
+    }
+
+    .board-lecture-selector-controls,
+    .board-lecture-select,
+    .board-session-input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .reaction-session-actions {
+        justify-content: stretch;
+    }
+
+    .reaction-session-input {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .reaction-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reaction-guide-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reaction-timeline-row {
+        grid-template-columns: 1fr;
+    }
+}

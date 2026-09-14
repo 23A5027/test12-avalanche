@@ -1,0 +1,133 @@
+/* ============================================================
+   User Page - Modern Dark Theme
+   ============================================================ */
+
+.user-page {
+  padding-top: var(--space-4);
+}
+
+.user-page-header {
+  margin-bottom: var(--space-6);
+}
+
+/* User Card */
+.user-card {
+  margin-bottom: var(--space-6);
+  padding: var(--space-8) var(--space-6);
+}
+
+.user-address {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.user-address-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-1);
+}
+
+.user-address-value {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Stats Grid */
+.user-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.user-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  transition: all var(--transition-base);
+}
+
+.user-stat-item:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px);
+}
+
+.user-stat-icon {
+  font-size: 24px;
+}
+
+.user-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.user-stat-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+/* Token History */
+.token-history {
+  margin-top: var(--space-6);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Transaction Card (history items) */
+.transaction_card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  word-break: break-all;
+  transition: all var(--transition-base);
+}
+
+.transaction_card:hover {
+  background: var(--glass-bg-hover);
+}
+
+.transfer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media screen and (max-width: 576px) {
+  .user-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .user-stat-item {
+    flex-direction: row;
+    text-align: left;
+    gap: var(--space-3);
+  }
+
+  .user-stat-info {
+    align-items: flex-start;
+  }
+}

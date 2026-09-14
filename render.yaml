@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: test12-live-signal
+    runtime: node
+    plan: free
+    rootDir: live-signal-service
+    buildCommand: npm install
+    startCommand: npm run start
+    healthCheckPath: /healthz
+    autoDeploy: true

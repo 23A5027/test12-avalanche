@@ -1,0 +1,1254 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "_isStudent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_isStudent",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "_isTeacher",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "_isTeacher",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "students_address",
+          "type": "address[]"
+        }
+      ],
+      "name": "add_student",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "res",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "teacher_address",
+          "type": "address"
+        }
+      ],
+      "name": "add_teacher",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "res",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "adding_reward",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancel_answer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "cancelled",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_explanation",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_thumbnail_url",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_content",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_answer_type",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_answer_data",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_answer",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startline_after_epoch",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_timelimit_after_epoch",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_reward",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_respondent_limit",
+          "type": "uint256"
+        }
+      ],
+      "name": "create_quiz",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_explanation",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_thumbnail_url",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_content",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startline_after_epoch",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_timelimit_after_epoch",
+          "type": "uint256"
+        }
+      ],
+      "name": "edit_quiz",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_platform_token_addresses",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "tft_token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "ttt_token",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_confirm_answer",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "confirm_answer",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_payment",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentUserAccessSnapshot",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_teacher",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_student",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "added_by",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "added_at",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_is_payment",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "is_payment",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_quiz",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "explanation",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "thumbnail_url",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "content",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "answer_data",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "create_time_epoch",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start_time_epoch",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "time_limit_epoch",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "respondent_count",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "respondent_limit",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Quiz_Dapp.QuizView",
+          "name": "quiz_data",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_quiz_answer_type",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "answer_type",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_quiz_length",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_quiz_simple",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "explanation",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "thumbnail_url",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start_time_epoch",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "time_limit_epoch",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "respondent_count",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "respondent_limit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "state",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "is_payment",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct Quiz_Dapp.QuizSimpleView",
+          "name": "quiz_data",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getRegistrationDetails",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_teacher",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_student",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "added_by",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "added_at",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRegistrationDetails",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_teacher",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_student",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "added_by",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "added_at",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getRoleSummary",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_teacher",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_student",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRoleSummary",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_teacher",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "is_student",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        },
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_teacher_all",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "result",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_student_all",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "result",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_student_answer_hash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_revealed_correct_answer",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "correct_answer",
+          "type": "string"
+        },
+        {
+          "internalType": "bool",
+          "name": "visible",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "student",
+          "type": "address"
+        }
+      ],
+      "name": "get_student_answer_detail",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "answer_text",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "state",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "answer_time",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "reward",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "result",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "submitted",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "target",
+          "type": "address"
+        }
+      ],
+      "name": "get_user",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "student_id",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "img_url",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "result",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "state",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "get_user_role",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_user_role",
+      "outputs": [
+        {
+          "internalType": "uint8",
+          "name": "role",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "get_user_role_label",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "get_user_role_label",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "role_label",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "numOfStudent",
+          "type": "uint256"
+        }
+      ],
+      "name": "investment_to_quiz",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newReward",
+          "type": "uint256"
+        }
+      ],
+      "name": "reduce_quiz_reward",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "burned_amount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "newReward",
+          "type": "uint256"
+        }
+      ],
+      "name": "get_quiz_reward_burn_amount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "burned_amount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "isRegistered",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isRegistered",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "registered",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "answer",
+          "type": "string"
+        },
+        {
+          "internalType": "address[]",
+          "name": "students",
+          "type": "address[]"
+        }
+      ],
+      "name": "payment_of_reward",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "correct_count",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "confirm_answer",
+          "type": "string"
+        },
+        {
+          "internalType": "address[]",
+          "name": "correct_students",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "incorrect_students",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool",
+          "name": "finalize_payment",
+          "type": "bool"
+        }
+      ],
+      "name": "payment_of_reward_manual",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "correct_count",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "quiz_id",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "answer",
+          "type": "string"
+        }
+      ],
+      "name": "save_answer",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "answer_id",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "user_img",
+          "type": "string"
+        }
+      ],
+      "name": "set_user_img",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "user_name",
+          "type": "string"
+        }
+      ],
+      "name": "set_user_name",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "tft_token_address",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ttt_token_address",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "next_tft_token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "next_ttt_token",
+          "type": "address"
+        }
+      ],
+      "name": "update_platform_token_addresses",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "updated",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

@@ -1,0 +1,436 @@
+/* ============================================================
+   Web3 Quiz DApp - Design Tokens
+   モダンダークテーマ + グラスモーフィズム
+   ============================================================ */
+
+/* Google Fonts import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ──────────────────────────────────
+     Background Colors
+     ────────────────────────────────── */
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1a1f35;
+  --bg-surface: #1e2440;
+
+  /* ──────────────────────────────────
+     Glass Morphism
+     ────────────────────────────────── */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-hover: rgba(255, 255, 255, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-blur: blur(16px);
+
+  /* ──────────────────────────────────
+     Accent Colors
+     ────────────────────────────────── */
+  --accent-cyan: #00d4ff;
+  --accent-cyan-dim: rgba(0, 212, 255, 0.15);
+  --accent-purple: #a855f7;
+  --accent-purple-dim: rgba(168, 85, 247, 0.15);
+  --accent-pink: #ec4899;
+  --accent-pink-dim: rgba(236, 72, 153, 0.15);
+  --accent-green: #10b981;
+  --accent-green-dim: rgba(16, 185, 129, 0.15);
+  --accent-red: #ef4444;
+  --accent-red-dim: rgba(239, 68, 68, 0.15);
+  --accent-yellow: #f59e0b;
+  --accent-yellow-dim: rgba(245, 158, 11, 0.15);
+  --accent-blue: #3b82f6;
+  --accent-blue-dim: rgba(59, 130, 246, 0.15);
+
+  /* Gradient Presets */
+  --gradient-primary: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  --gradient-warm: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow));
+  --gradient-cool: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+  --gradient-bg: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #1a1035 100%);
+
+  /* ──────────────────────────────────
+     Text Colors
+     ────────────────────────────────── */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-accent: var(--accent-cyan);
+  --text-on-accent: #ffffff;
+
+  /* ──────────────────────────────────
+     Typography
+     ────────────────────────────────── */
+  --font-main: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-size-4xl: 2.25rem;   /* 36px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ──────────────────────────────────
+     Spacing
+     ────────────────────────────────── */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ──────────────────────────────────
+     Border Radius
+     ────────────────────────────────── */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+
+  /* ──────────────────────────────────
+     Shadows
+     ────────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.3);
+  --shadow-glow-purple: 0 0 20px rgba(168, 85, 247, 0.3);
+  --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.3);
+  --shadow-glow-red: 0 0 20px rgba(239, 68, 68, 0.3);
+
+  /* ──────────────────────────────────
+     Transitions
+     ────────────────────────────────── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ──────────────────────────────────
+     Z-index
+     ────────────────────────────────── */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-navbar: 500;
+  --z-modal-backdrop: 900;
+  --z-modal: 1000;
+  --z-toast: 1100;
+
+  /* ──────────────────────────────────
+     Layout
+     ────────────────────────────────── */
+  --navbar-height: 64px;
+  --content-max-width: 900px;
+  --sidebar-width: 280px;
+}
+
+/* ============================================================
+   Base Reset & Globals
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-main);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background: var(--gradient-bg);
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Glass Card Component
+   ============================================================ */
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--glass-shadow);
+  transition: all var(--transition-base);
+}
+
+.glass-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================================
+   Status Glow Variants (for quiz cards)
+   ============================================================ */
+
+.glow-unanswered {
+  border-color: rgba(0, 212, 255, 0.25);
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.glow-correct {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: var(--shadow-glow-green);
+}
+
+.glow-incorrect {
+  border-color: rgba(239, 68, 68, 0.25);
+  box-shadow: var(--shadow-glow-red);
+}
+
+.glow-answered {
+  border-color: rgba(168, 85, 247, 0.25);
+  box-shadow: var(--shadow-glow-purple);
+}
+
+/* ============================================================
+   Button Components
+   ============================================================ */
+
+.btn-primary-custom {
+  background: var(--gradient-primary);
+  color: var(--text-on-accent);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow-cyan);
+  filter: brightness(1.1);
+}
+
+.btn-primary-custom:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-ghost:hover {
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border-color: var(--glass-border-hover);
+}
+
+/* ============================================================
+   Form Controls
+   ============================================================ */
+
+.form-control-custom {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-main);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-base);
+  width: 100%;
+}
+
+.form-control-custom:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px var(--accent-cyan-dim);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-control-custom::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   Badge / Tag
+   ============================================================ */
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-unanswered {
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+}
+
+.badge-correct {
+  background: var(--accent-green-dim);
+  color: var(--accent-green);
+}
+
+.badge-incorrect {
+  background: var(--accent-red-dim);
+  color: var(--accent-red);
+}
+
+.badge-answered {
+  background: var(--accent-purple-dim);
+  color: var(--accent-purple);
+}
+
+/* ============================================================
+   Layout: Main Content Area
+   ============================================================ */
+
+.main-content {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+  padding-bottom: calc(var(--navbar-height) + var(--space-8));
+  min-height: 100vh;
+}
+
+/* ============================================================
+   Typography Utilities
+   ============================================================ */
+
+.heading-xl {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heading-lg {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.heading-md {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-accent {
+  color: var(--accent-cyan);
+}
+
+/* ============================================================
+   Scrollbar Styling
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* ============================================================
+   Selection
+   ============================================================ */
+
+::selection {
+  background: var(--accent-cyan-dim);
+  color: var(--accent-cyan);
+}
+
+/* ============================================================
+   Responsive Breakpoints
+   ============================================================ */
+
+@media screen and (max-width: 576px) {
+  :root {
+    --navbar-height: 56px;
+    --font-size-3xl: 1.5rem;
+    --font-size-2xl: 1.25rem;
+  }
+
+  .main-content {
+    padding: var(--space-4) var(--space-3);
+    padding-bottom: calc(var(--navbar-height) + var(--space-6));
+  }
+}
+
+@media screen and (min-width: 577px) and (max-width: 768px) {
+  .main-content {
+    padding: var(--space-6) var(--space-4);
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .main-content {
+    padding: var(--space-8) var(--space-6);
+  }
+}
