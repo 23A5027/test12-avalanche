@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/test12-avalanche/static/css/main.27d3c9b7.css",
-    "main.js": "/test12-avalanche/static/js/main.2dbd916e.js",
+    "main.js": "/test12-avalanche/static/js/main.54644705.js",
     "static/css/994.c21ef6ec.chunk.css": "/test12-avalanche/static/css/994.c21ef6ec.chunk.css",
     "static/js/994.f2d75ac3.chunk.js": "/test12-avalanche/static/js/994.f2d75ac3.chunk.js",
     "static/css/715.7c3f9c14.chunk.css": "/test12-avalanche/static/css/715.7c3f9c14.chunk.css",
     "static/js/715.df4ad1d6.chunk.js": "/test12-avalanche/static/js/715.df4ad1d6.chunk.js",
     "static/css/10.2e82493b.chunk.css": "/test12-avalanche/static/css/10.2e82493b.chunk.css",
-    "static/js/10.b29a7353.chunk.js": "/test12-avalanche/static/js/10.b29a7353.chunk.js",
+    "static/js/10.366b3405.chunk.js": "/test12-avalanche/static/js/10.366b3405.chunk.js",
     "static/css/337.de756aa0.chunk.css": "/test12-avalanche/static/css/337.de756aa0.chunk.css",
     "static/js/337.ebba3771.chunk.js": "/test12-avalanche/static/js/337.ebba3771.chunk.js",
     "static/js/808.896a6f7c.chunk.js": "/test12-avalanche/static/js/808.896a6f7c.chunk.js",
@@ -31,8 +31,8 @@
     "static/js/420.37386c51.chunk.js": "/test12-avalanche/static/js/420.37386c51.chunk.js",
     "static/css/305.7ae9bc6b.chunk.css": "/test12-avalanche/static/css/305.7ae9bc6b.chunk.css",
     "static/js/305.87beb5b9.chunk.js": "/test12-avalanche/static/js/305.87beb5b9.chunk.js",
-    "static/css/960.7519d55f.chunk.css": "/test12-avalanche/static/css/960.7519d55f.chunk.css",
-    "static/js/960.82ae9fd5.chunk.js": "/test12-avalanche/static/js/960.82ae9fd5.chunk.js",
+    "static/css/960.973d595d.chunk.css": "/test12-avalanche/static/css/960.973d595d.chunk.css",
+    "static/js/960.1e5700ed.chunk.js": "/test12-avalanche/static/js/960.1e5700ed.chunk.js",
     "static/js/591.e661df3c.chunk.js": "/test12-avalanche/static/js/591.e661df3c.chunk.js",
     "static/js/787.1fff27e6.chunk.js": "/test12-avalanche/static/js/787.1fff27e6.chunk.js",
     "static/css/234.fc04df8c.chunk.css": "/test12-avalanche/static/css/234.fc04df8c.chunk.css",
@@ -43,13 +43,13 @@
     "static/media/metamask-icon.svg": "/test12-avalanche/static/media/metamask-icon.b3649ecfe8c45f27ceb9f99d70f3d24e.svg",
     "index.html": "/test12-avalanche/index.html",
     "main.27d3c9b7.css.map": "/test12-avalanche/static/css/main.27d3c9b7.css.map",
-    "main.2dbd916e.js.map": "/test12-avalanche/static/js/main.2dbd916e.js.map",
+    "main.54644705.js.map": "/test12-avalanche/static/js/main.54644705.js.map",
     "994.c21ef6ec.chunk.css.map": "/test12-avalanche/static/css/994.c21ef6ec.chunk.css.map",
     "994.f2d75ac3.chunk.js.map": "/test12-avalanche/static/js/994.f2d75ac3.chunk.js.map",
     "715.7c3f9c14.chunk.css.map": "/test12-avalanche/static/css/715.7c3f9c14.chunk.css.map",
     "715.df4ad1d6.chunk.js.map": "/test12-avalanche/static/js/715.df4ad1d6.chunk.js.map",
     "10.2e82493b.chunk.css.map": "/test12-avalanche/static/css/10.2e82493b.chunk.css.map",
-    "10.b29a7353.chunk.js.map": "/test12-avalanche/static/js/10.b29a7353.chunk.js.map",
+    "10.366b3405.chunk.js.map": "/test12-avalanche/static/js/10.366b3405.chunk.js.map",
     "337.de756aa0.chunk.css.map": "/test12-avalanche/static/css/337.de756aa0.chunk.css.map",
     "337.ebba3771.chunk.js.map": "/test12-avalanche/static/js/337.ebba3771.chunk.js.map",
     "808.896a6f7c.chunk.js.map": "/test12-avalanche/static/js/808.896a6f7c.chunk.js.map",
@@ -73,8 +73,8 @@
     "420.37386c51.chunk.js.map": "/test12-avalanche/static/js/420.37386c51.chunk.js.map",
     "305.7ae9bc6b.chunk.css.map": "/test12-avalanche/static/css/305.7ae9bc6b.chunk.css.map",
     "305.87beb5b9.chunk.js.map": "/test12-avalanche/static/js/305.87beb5b9.chunk.js.map",
-    "960.7519d55f.chunk.css.map": "/test12-avalanche/static/css/960.7519d55f.chunk.css.map",
-    "960.82ae9fd5.chunk.js.map": "/test12-avalanche/static/js/960.82ae9fd5.chunk.js.map",
+    "960.973d595d.chunk.css.map": "/test12-avalanche/static/css/960.973d595d.chunk.css.map",
+    "960.1e5700ed.chunk.js.map": "/test12-avalanche/static/js/960.1e5700ed.chunk.js.map",
     "591.e661df3c.chunk.js.map": "/test12-avalanche/static/js/591.e661df3c.chunk.js.map",
     "787.1fff27e6.chunk.js.map": "/test12-avalanche/static/js/787.1fff27e6.chunk.js.map",
     "234.fc04df8c.chunk.css.map": "/test12-avalanche/static/css/234.fc04df8c.chunk.css.map",
@@ -85,6 +85,6 @@
   },
   "entrypoints": [
     "static/css/main.27d3c9b7.css",
-    "static/js/main.2dbd916e.js"
+    "static/js/main.54644705.js"
   ]
 }
