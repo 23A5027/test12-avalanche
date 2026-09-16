@@ -11,6 +11,7 @@ import { bootstrap_teacher_addresses, token_address, ttt_token_address } from ".
 import { MAX_TFT_PER_LECTURE, MAX_TFT_TOTAL, QUIZ_RATE_OPTIONS, TOTAL_LECTURE_COUNT, TFT_PER_POINT } from "../../utils/quizRewardRate";
 import { buildAnswerQuizPath, buildAnswerQuizState, rememberQuizSource } from "../../utils/quizLinks";
 import { syncRewardPayoutLedgerFromServer } from "../../utils/rewardPayoutLedger";
+import { beginScreenLoadBenchmark } from "../../utils/performanceBenchmark";
 
 const BALANCE_CACHE_SCOPE = [token_address, ttt_token_address]
     .map((value) => String(value || "").toLowerCase())
@@ -88,6 +89,10 @@ function buildReviewItemsFromSources({ reviewQuizIds = [], reviewQuizzes = [], p
     return reviewItems;
 }
 
+function getMetricErrorMessage(error) {
+    return error?.shortMessage || error?.message || String(error || "");
+}
+
 function User_page(props) {
     const { address } = useParams();
 
@@ -109,11 +114,77 @@ function User_page(props) {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const now_numRef = useRef(0);
     const targetRef = useRef(null);
+    const screenMetricRef = useRef(null);
+    const screenMetricStateRef = useRef({
+        finished: true,
+        initialDone: false,
+        deferredDone: false,
+        errors: [],
+        walletAddress: "",
+        cacheState: "unknown",
+    });
 
     const cont = useMemo(() => props.cont || new Contracts_MetaMask(), [props.cont]);
     const [history_list, Set_history_list] = useState([]);
 
+    const getUserPageCacheState = (cachedBalances) => {
+        if (!cachedBalances) return "unknown";
+        return cachedBalances.token != null || cachedBalances.tttBalance != null ? "warm" : "unknown";
+    };
+
+    const startUserPageMetric = (cachedBalances) => {
+        const cacheState = getUserPageCacheState(cachedBalances);
+        screenMetricRef.current = beginScreenLoadBenchmark({
+            screenName: "User Page",
+            route: `/user_page/${address || ""}`,
+            walletAddress: address || "",
+            cacheState,
+        });
+        screenMetricStateRef.current = {
+            finished: false,
+            initialDone: false,
+            deferredDone: false,
+            errors: [],
+            walletAddress: address || "",
+            cacheState,
+        };
+    };
+
+    const finishUserPageMetricNow = (options = {}) => {
+        const state = screenMetricStateRef.current;
+        if (state.finished || !screenMetricRef.current) return;
+        state.finished = true;
+        screenMetricRef.current.finish({
+            ...options,
+            walletAddress: options.walletAddress || state.walletAddress,
+            cacheState: options.cacheState || state.cacheState,
+        });
+    };
+
+    const markUserPageMetricStep = (stepName, result = {}) => {
+        const state = screenMetricStateRef.current;
+        if (state.finished || !screenMetricRef.current) return;
+        state[stepName] = true;
+        if (result.walletAddress) {
+            state.walletAddress = result.walletAddress;
+        }
+        if (result.success === false) {
+            state.errors.push(result.errorMessage || getMetricErrorMessage(result.error));
+        }
+        if (state.initialDone && state.deferredDone) {
+            state.finished = true;
+            screenMetricRef.current.finish({
+                success: state.errors.length === 0,
+                errorMessage: state.errors.filter(Boolean).join(" | "),
+                walletAddress: state.walletAddress,
+                cacheState: state.cacheState,
+            });
+        }
+    };
+
     const loadInitialData = async () => {
+        const cachedBalances = getCachedBalances(address);
+        startUserPageMetric(cachedBalances);
         try {
             setLoadError("");
             setIsPageLoading(true);
@@ -121,7 +192,6 @@ function User_page(props) {
             Set_history_list([]);
             setReviewItems([]);
 
-            const cachedBalances = getCachedBalances(address);
             if (cachedBalances.token != null) {
                 Set_token(cachedBalances.token);
             }
@@ -144,7 +214,7 @@ function User_page(props) {
                 nextConnectedAddress,
                 historyLength,
                 studentCount,
-            ] = await Promise.all([
+            ] = await screenMetricRef.current.measureBlockchain(() => Promise.all([
                 cont.get_token_balance(address),
                 cont.get_ttt_balance(address),
                 cont.get_quiz_reward_tft(address),
@@ -154,7 +224,11 @@ function User_page(props) {
                 cont.get_address(),
                 cont.get_user_history_len(address),
                 cont.get_num_of_students(),
-            ]);
+            ]));
+            screenMetricRef.current.setContext({
+                history_count: Number(historyLength || 0),
+                student_count: Number(studentCount || 0),
+            });
 
             const resolvedTokenBalance = nextTokenBalance ?? cachedBalances.token ?? token ?? 0;
             const resolvedTttBalance = nextTttBalance ?? cachedBalances.tttBalance ?? tttBalance ?? 0;
@@ -187,11 +261,20 @@ function User_page(props) {
 
             Set_history_sum(Number(historyLength || 0));
             now_numRef.current = Number(historyLength || 0);
+            markUserPageMetricStep("initialDone", {
+                success: true,
+                walletAddress: nextConnectedAddress || address || "",
+            });
         } catch (error) {
             console.error("Failed to load user page", error);
             Set_history_sum(0);
             now_numRef.current = 0;
             setLoadError("マイページの読み込みに失敗しました。通信状態を確認して再読み込みしてください。");
+            finishUserPageMetricNow({
+                success: false,
+                error,
+                walletAddress: address || "",
+            });
         } finally {
             setIsPageLoading(false);
         }
@@ -207,6 +290,8 @@ function User_page(props) {
         let cancelled = false;
 
         async function loadDeferredData() {
+            let metricSuccess = true;
+            let metricError = null;
             try {
                 const snapshot = getCourseEnhancementSnapshot();
                 const ownPractice = snapshot.practiceAttempts.filter((item) => String(item.address || "").toLowerCase() === String(address || "").toLowerCase());
@@ -215,14 +300,15 @@ function User_page(props) {
                     .map((item) => Number(item.quizId))
                     .filter((quizId) => Number.isFinite(quizId));
 
-                const [reviewQuizIds, nextRank] = await Promise.all([
+                const screenMetric = screenMetricRef.current;
+                const [reviewQuizIds, nextRank] = await screenMetric.measureBlockchain(() => Promise.all([
                     cont.getReviewQuizIds(address),
                     Number(result || 0) > 0 ? cont.get_rank(Number(result || 0)) : Promise.resolve(0),
-                ]);
+                ]));
                 const targetQuizIds = [...new Set([...(Array.isArray(reviewQuizIds) ? reviewQuizIds : []), ...practiceIncorrectQuizIds])];
-                const reviewQuizzes = await Promise.all(
+                const reviewQuizzes = await screenMetric.measureBlockchain(() => Promise.all(
                     targetQuizIds.slice(0, 30).map((quizId) => cont.get_quiz_simple(quizId))
-                );
+                ));
 
                 if (cancelled) return;
                 setRank(nextRank || 0);
@@ -233,6 +319,16 @@ function User_page(props) {
                 }));
             } catch (error) {
                 console.error("Failed to load deferred user page data", error);
+                metricSuccess = false;
+                metricError = error;
+            } finally {
+                if (!cancelled) {
+                    markUserPageMetricStep("deferredDone", {
+                        success: metricSuccess,
+                        error: metricError,
+                        walletAddress: address || "",
+                    });
+                }
             }
         }
 

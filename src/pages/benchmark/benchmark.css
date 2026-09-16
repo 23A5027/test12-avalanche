@@ -1,0 +1,300 @@
+.benchmark-page {
+    display: grid;
+    gap: 24px;
+    width: 100%;
+    max-width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: 0 clamp(12px, 2vw, 24px) 112px;
+    color: #0f172a;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.benchmark-page,
+.benchmark-page * {
+    box-sizing: border-box;
+}
+
+.benchmark-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: flex-end;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.benchmark-header h1 {
+    margin: 0;
+    color: #111827;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.benchmark-eyebrow {
+    margin: 0 0 6px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.benchmark-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.benchmark-actions .btn-secondary-custom {
+    max-width: 100%;
+    color: #0f172a;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.benchmark-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.benchmark-panel {
+    width: 100%;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 8px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    padding: 22px;
+    color: #0f172a;
+    overflow: hidden;
+}
+
+.benchmark-panel > * {
+    min-width: 0;
+}
+
+.benchmark-panel h2 {
+    margin: 0 0 16px;
+    color: #111827;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.benchmark-panel-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.benchmark-panel-header h2 {
+    margin-bottom: 0;
+}
+
+.benchmark-definition-list {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+}
+
+.benchmark-definition-list div {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    min-width: 0;
+}
+
+.benchmark-definition-list dt {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.benchmark-definition-list dd {
+    margin: 0;
+    color: #0f172a;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.benchmark-field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 16px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.benchmark-field select {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid rgba(15, 23, 42, 0.18);
+    border-radius: 8px;
+    background: #fff;
+    color: #0f172a;
+    padding: 0 12px;
+}
+
+.benchmark-start-button {
+    width: 100%;
+    min-height: 46px;
+}
+
+.benchmark-progress {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.benchmark-progress-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #475569;
+    font-size: 13px;
+    flex-wrap: wrap;
+}
+
+.benchmark-progress-track {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+}
+
+.benchmark-progress-bar {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #0ea5e9, #22c55e);
+    transition: width 160ms ease;
+}
+
+.benchmark-note {
+    margin: 14px 0 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.benchmark-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.benchmark-results-wrap {
+    max-width: 100%;
+    max-height: 520px;
+    overflow: auto;
+}
+
+.benchmark-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.benchmark-table th {
+    white-space: nowrap;
+}
+
+.benchmark-table td {
+    max-width: 240px;
+    white-space: normal;
+}
+
+.benchmark-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 800;
+}
+
+.benchmark-table td {
+    color: #0f172a;
+}
+
+.benchmark-table td:nth-child(8),
+.benchmark-table td:nth-child(10),
+.benchmark-table td:nth-child(11) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .benchmark-header,
+    .benchmark-panel-header,
+    .benchmark-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .benchmark-header {
+        align-items: stretch;
+    }
+
+    .benchmark-actions {
+        justify-content: flex-start;
+    }
+
+    .benchmark-actions .btn-secondary-custom {
+        flex: 1 1 150px;
+    }
+
+    .benchmark-definition-list div {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+
+@media (max-width: 640px) {
+    .benchmark-page {
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-bottom: 128px;
+    }
+
+    .benchmark-panel {
+        padding: 16px;
+    }
+
+    .benchmark-header h1 {
+        font-size: 26px;
+    }
+
+    .benchmark-table {
+        font-size: 12px;
+    }
+
+    .benchmark-table th,
+    .benchmark-table td {
+        padding: 8px 10px;
+    }
+}

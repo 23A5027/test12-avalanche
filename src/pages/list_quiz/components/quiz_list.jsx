@@ -15,17 +15,30 @@ function Quiz_list(props) {
     const isLoadingRef = useRef(false);
     const hasResolvedInitialLoadRef = useRef(false);
 
+    const resolveInitialLoad = (result = {}) => {
+        if (hasResolvedInitialLoadRef.current) return;
+        hasResolvedInitialLoadRef.current = true;
+        props.onInitialLoadResolved?.(result);
+    };
+
     const get_quiz_list = async (now) => {
-        if (isLoadingRef.current || now <= 0) return;
+        if (isLoadingRef.current) return;
+        if (now <= 0) {
+            resolveInitialLoad({ success: true });
+            return;
+        }
         isLoadingRef.current = true;
         let add_quiz_list = [];
+        let loadSuccess = true;
+        let loadError = null;
+        const measureBlockchain = props.measureBlockchain || ((operation) => operation());
 
         try {
             if (now - add_num.current < 0) {
-                add_quiz_list = await props.cont.get_quiz_list(now, 0, { preferCachedAccountOnly: true });
+                add_quiz_list = await measureBlockchain(() => props.cont.get_quiz_list(now, 0, { preferCachedAccountOnly: true }));
                 props.now_numRef.current = 0;
             } else {
-                add_quiz_list = await props.cont.get_quiz_list(now, now - add_num.current, { preferCachedAccountOnly: true });
+                add_quiz_list = await measureBlockchain(() => props.cont.get_quiz_list(now, now - add_num.current, { preferCachedAccountOnly: true }));
                 props.now_numRef.current = now - add_num.current;
             }
 
@@ -42,12 +55,11 @@ function Quiz_list(props) {
         } catch (error) {
             console.error("Failed to load quiz list batch", error);
             props.setLoadError?.("問題一覧の一部読み込みに失敗しました。再読み込みしてください。");
+            loadSuccess = false;
+            loadError = error;
         } finally {
             isLoadingRef.current = false;
-            if (!hasResolvedInitialLoadRef.current) {
-                hasResolvedInitialLoadRef.current = true;
-                props.onInitialLoadResolved?.();
-            }
+            resolveInitialLoad({ success: loadSuccess, error: loadError });
         }
     };
 

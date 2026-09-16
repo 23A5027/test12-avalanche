@@ -2715,8 +2715,16 @@ class Contracts_MetaMask {
         });
     }
 
-    async create_answer(id, answer, setShow, setContent, sourceAddress = "") {
+    async create_answer(id, answer, setShow, setContent, sourceAddress = "", benchmarkCallbacks = {}) {
         console.log(id, answer);
+        const emitBenchmarkEvent = (eventName, payload) => {
+            try {
+                benchmarkCallbacks?.[eventName]?.(payload);
+            } catch (callbackError) {
+                console.warn("Answer benchmark callback failed", callbackError);
+            }
+        };
+
         try {
             const provider = await this.getEthereumProviderReady();
             if (!provider) {
@@ -2735,20 +2743,23 @@ class Contracts_MetaMask {
             setShow(true);
             setContent("書き込み中...");
             let hash = await this._save_answer(account, id, answer, sourceAddress);
+            emitBenchmarkEvent("onTransactionHash", { hash, account, quizId: id, sourceAddress });
 
             if (hash) {
                 try {
                     let res = await this.waitForReceiptWithRetry(hash);
+                    emitBenchmarkEvent("onTransactionReceipt", { hash, receipt: res, account, quizId: id, sourceAddress });
                     console.log(res);
                     localStorage.setItem(`quiz_${this.normalizeQuizAddress(sourceAddress)}_${id}_answer`, answer);
                     this.invalidateQuizSimpleCache(this.resolveQuizAddress(sourceAddress), id);
-                    return res;
+                    return { ...res, hash, transactionHash: res?.transactionHash || hash };
                 } catch (receiptError) {
+                    emitBenchmarkEvent("onTransactionReceiptError", { hash, error: receiptError, account, quizId: id, sourceAddress });
                     const verified = await this.verify_answer_submission(account, id, answer, sourceAddress);
                     if (verified) {
                         localStorage.setItem(`quiz_${this.normalizeQuizAddress(sourceAddress)}_${id}_answer`, answer);
                         this.invalidateQuizSimpleCache(this.resolveQuizAddress(sourceAddress), id);
-                        return { status: "verified_after_receipt_timeout", hash };
+                        return { status: "verified_after_receipt_timeout", hash, transactionHash: hash };
                     }
                     throw receiptError;
                 }

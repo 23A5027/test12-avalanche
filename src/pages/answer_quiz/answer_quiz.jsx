@@ -26,6 +26,10 @@ import {
     parseQuizInputAnswerData,
     testRegexPattern,
 } from "../../utils/quizAnswerInput";
+import {
+    appendQuizBenchmarkMetric,
+    beginQuizOperationBenchmark,
+} from "../../utils/performanceBenchmark";
 
 function Show_correct(props) {
     if (!props.cont) return null;
@@ -172,6 +176,30 @@ function Answer_quiz() {
     const textChangeCountRef = useRef(0);
     const actorLogPayload = access.address ? { address: access.address } : {};
 
+    const recordQuizOperationMetric = (metricName, {
+        startedAt,
+        durationMs,
+        success = true,
+        error = null,
+        errorMessage = "",
+        txHash = "",
+        receipt = null,
+    } = {}) => appendQuizBenchmarkMetric({
+        metric_name: metricName,
+        quiz_id: id,
+        started_at: startedAt || new Date().toISOString(),
+        duration_ms: durationMs,
+        success,
+        error,
+        error_message: errorMessage,
+        wallet_address: access.address || "",
+        tx_hash: txHash,
+        block_number: receipt?.blockNumber ?? "",
+        receipt_status: receipt?.status ?? "",
+        gas_used: receipt?.gasUsed ?? "",
+        quiz_count: "",
+    });
+
     useEffect(() => {
         setResolvedSourceAddress(initialSourceAddress);
     }, [id, initialSourceAddress]);
@@ -244,7 +272,7 @@ function Answer_quiz() {
         });
     };
 
-    const get_quiz = async () => {
+    const get_quiz = async ({ recordDetailMetric = true } = {}) => {
         const startedAt = performance.now();
         setLoadError("");
         appendActivityLog(ACTION_TYPES.QUIZ_LOAD_STARTED, {
@@ -252,6 +280,14 @@ function Answer_quiz() {
             quizId: id,
             ...actorLogPayload,
         });
+
+        const detailBenchmark = recordDetailMetric
+            ? beginQuizOperationBenchmark({
+                metricName: "quiz_detail_load",
+                quizId: id,
+                walletAddress: access.address || "",
+            })
+            : null;
 
         try {
             const resolvedQuiz = await contract.get_quiz_with_source(id, sourceAddress);
@@ -295,6 +331,10 @@ function Answer_quiz() {
 
             const durationMs = Math.round(performance.now() - startedAt);
             setLoadDurationMs(durationMs);
+            detailBenchmark?.finish({
+                success: true,
+                walletAddress: access.address || "",
+            });
             appendActivityLog(ACTION_TYPES.QUIZ_LOAD_SUCCESS, {
                 page: "answer_quiz",
                 quizId: id,
@@ -310,9 +350,15 @@ function Answer_quiz() {
                 durationMs,
                 ...actorLogPayload,
             });
+            return resolvedQuiz;
         } catch (error) {
             console.error(error);
             setLoadError("問題データの読み込みに失敗しました。通信状態を確認して再試行してください。");
+            detailBenchmark?.finish({
+                success: false,
+                error,
+                walletAddress: access.address || "",
+            });
             appendActivityLog(ACTION_TYPES.QUIZ_LOAD_FAILURE, {
                 page: "answer_quiz",
                 quizId: id,
@@ -320,6 +366,7 @@ function Answer_quiz() {
                 durationMs: Math.round(performance.now() - startedAt),
                 ...actorLogPayload,
             });
+            return null;
         }
     };
 
@@ -499,6 +546,55 @@ function Answer_quiz() {
 
         setIsSubmitting(true);
         const startedAt = performance.now();
+        const submitStartedAt = startedAt;
+        const submitStartedAtIso = new Date().toISOString();
+        let benchmarkTxHash = "";
+        let txHashReceivedAt = null;
+        let txHashReceivedAtIso = "";
+        let receiptReceivedAt = null;
+        let benchmarkReceipt = null;
+        let hashWaitMetricLogged = false;
+        let confirmationMetricLogged = false;
+        const answerBenchmarkCallbacks = {
+            onTransactionHash: ({ hash }) => {
+                benchmarkTxHash = hash || "";
+                txHashReceivedAt = performance.now();
+                txHashReceivedAtIso = new Date().toISOString();
+                hashWaitMetricLogged = true;
+                recordQuizOperationMetric("answer_tx_hash_wait_from_click", {
+                    startedAt: submitStartedAtIso,
+                    durationMs: txHashReceivedAt - submitStartedAt,
+                    success: Boolean(benchmarkTxHash),
+                    txHash: benchmarkTxHash,
+                });
+            },
+            onTransactionReceipt: ({ hash, receipt }) => {
+                const receivedAt = performance.now();
+                benchmarkTxHash = hash || benchmarkTxHash;
+                benchmarkReceipt = receipt || null;
+                receiptReceivedAt = receivedAt;
+                confirmationMetricLogged = true;
+                recordQuizOperationMetric("answer_tx_confirmation", {
+                    startedAt: txHashReceivedAtIso || new Date().toISOString(),
+                    durationMs: txHashReceivedAt == null ? 0 : receivedAt - txHashReceivedAt,
+                    success: true,
+                    txHash: benchmarkTxHash,
+                    receipt: benchmarkReceipt,
+                });
+            },
+            onTransactionReceiptError: ({ hash, error }) => {
+                if (txHashReceivedAt == null || confirmationMetricLogged) return;
+                benchmarkTxHash = hash || benchmarkTxHash;
+                confirmationMetricLogged = true;
+                recordQuizOperationMetric("answer_tx_confirmation", {
+                    startedAt: txHashReceivedAtIso || new Date().toISOString(),
+                    durationMs: performance.now() - txHashReceivedAt,
+                    success: false,
+                    error,
+                    txHash: benchmarkTxHash,
+                });
+            },
+        };
         const finalAnswer = convertFullWidthNumbersToHalf(answer);
         appendActivityLog(ACTION_TYPES.ANSWER_SUBMIT_CLICKED, {
             page: "answer_quiz",
@@ -511,11 +607,14 @@ function Answer_quiz() {
         });
 
         try {
-            const submitResult = await contract.create_answer(id, finalAnswer, setShow, setContent, sourceAddress);
-            const txHash = submitResult?.transactionHash || submitResult?.hash || "";
+            const submitResult = await contract.create_answer(id, finalAnswer, setShow, setContent, sourceAddress, answerBenchmarkCallbacks);
+            const txHash = submitResult?.transactionHash || submitResult?.hash || benchmarkTxHash || "";
             const verificationStatus = submitResult?.status === "verified_after_receipt_timeout"
                 ? "verified_after_receipt_timeout"
                 : "receipt_confirmed";
+            if (!benchmarkReceipt && submitResult?.blockNumber != null) {
+                benchmarkReceipt = submitResult;
+            }
             setSavedAnswerStr(finalAnswer);
             setAnswer(finalAnswer);
             clearDraft(draftKey);
@@ -542,11 +641,40 @@ function Answer_quiz() {
                 solvingDurationSeconds: answerStartedAtRef.current ? Math.round((Date.now() - answerStartedAtRef.current) / 1000) : null,
                 submitDurationMs: Math.round(performance.now() - startedAt),
             });
-            await get_quiz();
+            const postRefreshStartedAt = performance.now();
+            const postRefreshStartedAtIso = new Date().toISOString();
+            const refreshedQuiz = await get_quiz({ recordDetailMetric: false });
+            const postRefreshFinishedAt = performance.now();
+            if (txHashReceivedAt != null && receiptReceivedAt != null) {
+                const postRefreshSuccess = Boolean(refreshedQuiz);
+                recordQuizOperationMetric("answer_post_refresh", {
+                    startedAt: postRefreshStartedAtIso,
+                    durationMs: postRefreshFinishedAt - postRefreshStartedAt,
+                    success: postRefreshSuccess,
+                    txHash,
+                    receipt: benchmarkReceipt,
+                });
+                recordQuizOperationMetric("answer_total_after_hash", {
+                    startedAt: txHashReceivedAtIso || postRefreshStartedAtIso,
+                    durationMs: postRefreshFinishedAt - txHashReceivedAt,
+                    success: postRefreshSuccess,
+                    txHash,
+                    receipt: benchmarkReceipt,
+                });
+            }
             setShow(false);
             navigate("/list_quiz");
         } catch (error) {
             console.error(error);
+            if (!hashWaitMetricLogged) {
+                recordQuizOperationMetric("answer_tx_hash_wait_from_click", {
+                    startedAt: submitStartedAtIso,
+                    durationMs: performance.now() - submitStartedAt,
+                    success: false,
+                    error,
+                    txHash: benchmarkTxHash,
+                });
+            }
             const failureMessage = getSubmitFailureMessage(error, finalAnswer);
             appendActivityLog(ACTION_TYPES.ANSWER_SUBMIT_FAILED, {
                 page: "answer_quiz",

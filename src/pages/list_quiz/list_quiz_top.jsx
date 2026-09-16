@@ -10,6 +10,7 @@ import { getPendingCreatedQuizzes, pruneResolvedPendingCreatedQuizzes, subscribe
 import { getBatchAnswerQueue, subscribeBatchAnswerQueue } from "../../utils/batchAnswerQueue";
 import { Link } from "react-router-dom";
 import { legacy_quiz_addresses, quiz_address } from "../../contract/config";
+import { beginScreenLoadBenchmark } from "../../utils/performanceBenchmark";
 import "./list_quiz_top.css";
 
 const QUIZ_LIST_PAGE_CACHE_KEY = `web3_quiz_list_page_cache_v1_${normalizeQuizAddress(quiz_address)}`;
@@ -84,7 +85,36 @@ function List_quiz_top(props) {
     const quizSumRef = useRef(0);
     const quizListRef = useRef(Array.isArray(initialListCache?.quizList) ? initialListCache.quizList : []);
     const quizSumStateRef = useRef(quiz_sum);
+    const screenMetricRef = useRef(null);
+    const screenMetricFinishedRef = useRef(false);
     const getQuizCacheKey = (quiz) => normalizeDeletedQuizKey(`${quiz?.sourceAddress || quiz?.[12] || ""}:${Number(quiz?.[0])}`);
+
+    const getQuizListCacheState = () => {
+        return initialListCache ? "warm" : "unknown";
+    };
+
+    const startQuizListMetric = () => {
+        if (!screenMetricRef.current) {
+            screenMetricRef.current = beginScreenLoadBenchmark({
+                screenName: "Quiz List",
+                route: "/list_quiz",
+                walletAddress: access.address || cont.get_last_known_address?.() || "",
+                cacheState: getQuizListCacheState(),
+            });
+        }
+        return screenMetricRef.current;
+    };
+
+    const finishQuizListMetric = (options = {}) => {
+        if (screenMetricFinishedRef.current) return;
+        const screenMetric = startQuizListMetric();
+        screenMetricFinishedRef.current = true;
+        screenMetric.finish({
+            ...options,
+            walletAddress: options.walletAddress || access.address || cont.get_last_known_address?.() || "",
+            cacheState: options.cacheState || getQuizListCacheState(),
+        });
+    };
 
     useEffect(() => {
         quizListRef.current = Array.isArray(quiz_list) ? quiz_list : [];
@@ -126,9 +156,11 @@ function List_quiz_top(props) {
     const refreshQuizLengthTimerRef = useRef(null);
 
     const refreshQuizLength = async () => {
+        const screenMetric = startQuizListMetric();
         try {
-            const data = await cont.get_quiz_lenght();
+            const data = await screenMetric.measureBlockchain(() => cont.get_quiz_lenght());
             const nextLength = parseInt(Number(data), 10) || 0;
+            screenMetric.setContext({ quiz_count: nextLength });
             const visibleCount = Array.isArray(quizListRef.current) ? quizListRef.current.length : 0;
             const cachedCount = Array.isArray(initialListCache?.quizList) ? initialListCache.quizList.length : 0;
             const fallbackVisibleCount = Math.max(visibleCount, cachedCount, Number(quizSumStateRef.current || 0));
@@ -140,6 +172,7 @@ function List_quiz_top(props) {
                     Set_quiz_sum(fallbackVisibleCount);
                 }
                 setLoadError("");
+                finishQuizListMetric({ success: true });
                 return;
             }
 
@@ -155,6 +188,9 @@ function List_quiz_top(props) {
                 now_numRef.current = nextLength;
             }
             setLoadError("");
+            if (nextLength <= 0) {
+                finishQuizListMetric({ success: true });
+            }
         } catch (error) {
             console.error("Failed to load quiz length", error);
             if (quizSumStateRef.current == null && (!Array.isArray(quizListRef.current) || quizListRef.current.length === 0)) {
@@ -170,6 +206,7 @@ function List_quiz_top(props) {
                 }
             }
             setLoadError("問題一覧の読み込みに失敗しました。");
+            finishQuizListMetric({ success: false, error });
         }
     };
 
@@ -249,6 +286,7 @@ function List_quiz_top(props) {
     };
 
     useEffect(() => {
+        startQuizListMetric();
         refreshQuizLength();
 
         // デバウンス付きで visibilitychange/focus を処理（連続発火防止）
@@ -409,7 +447,11 @@ function List_quiz_top(props) {
                     now_numRef={now_numRef}
                     setLoadError={setLoadError}
                     refreshKey={listRefreshKey}
-                    onInitialLoadResolved={() => setInitialListLoadResolved(true)}
+                    measureBlockchain={(operation) => startQuizListMetric().measureBlockchain(operation)}
+                    onInitialLoadResolved={(result) => {
+                        setInitialListLoadResolved(true);
+                        finishQuizListMetric(result);
+                    }}
                 />
 
                 <div className="quiz-list-items">

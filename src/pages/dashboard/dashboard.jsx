@@ -6,6 +6,7 @@ import { useAccessControl } from "../../utils/accessControl";
 import { convertTftToPoint } from "../../utils/quizRewardRate";
 import { getDeletedQuizzes, normalizeDeletedQuizKey } from "../../utils/liveSignalApi";
 import { syncRewardPayoutLedgerFromServer } from "../../utils/rewardPayoutLedger";
+import { beginScreenLoadBenchmark } from "../../utils/performanceBenchmark";
 import "./dashboard.css";
 
 function Dashboard() {
@@ -26,18 +27,35 @@ function Dashboard() {
         let cancelled = false;
 
         async function loadData() {
+            const screenMetric = beginScreenLoadBenchmark({
+                screenName: "Dashboard",
+                route: "/dashboard",
+                cacheState: "unknown",
+            });
+            let screenMetricFinished = false;
+            let metricWalletAddress = "";
+            const finishScreenMetric = (options = {}) => {
+                if (cancelled || screenMetricFinished) return;
+                screenMetricFinished = true;
+                screenMetric.finish({
+                    ...options,
+                    walletAddress: options.walletAddress || metricWalletAddress,
+                });
+            };
+
             try {
                 setLoadError("");
                 await syncRewardPayoutLedgerFromServer().catch(() => []);
                 const addr = access.address || cont.get_last_known_address?.() || await cont.get_address();
+                metricWalletAddress = addr || "";
                 if (cancelled) return;
                 setAddress(addr || "");
 
-                const [balanceResult, quizLengthResult, userResult] = await Promise.allSettled([
+                const [balanceResult, quizLengthResult, userResult] = await screenMetric.measureBlockchain(() => Promise.allSettled([
                     addr ? cont.get_token_balance(addr) : Promise.resolve(0),
                     cont.get_quiz_lenght(),
                     addr ? cont.get_user_data(addr) : Promise.resolve(["", "", 0, false]),
-                ]);
+                ]));
 
                 if (cancelled) return;
 
@@ -48,6 +66,7 @@ function Dashboard() {
                 setBalance(Number(bal || 0));
                 setQuizTotal(quizLength);
                 setUserData(user || ["", "", 0, false]);
+                screenMetric.setContext({ quiz_count: quizLength });
                 setLoading(false);
 
                 // 全クイズ参照は重いので、表示後に同期する
@@ -64,26 +83,29 @@ function Dashboard() {
                         console.error("Failed to sync deleted quizzes on dashboard", error);
                     });
 
-                Promise.all([
-                    cont.get_quiz_reward_tft(addr || ""),
-                ])
-                    .then(([nextScoreTft]) => {
-                        if (cancelled) return;
-                        const normalizedScore = Number(nextScoreTft || 0);
-                        setScoreTft(normalizedScore);
-                        if (normalizedScore <= 0) {
-                            setRank(0);
-                            return;
-                        }
-                        return cont.get_rank(normalizedScore).then((nextRank) => {
-                            if (!cancelled) {
-                                setRank(Number(nextRank || 0));
-                            }
-                        });
-                    })
+                const rankLoadPromise = screenMetric.measureBlockchain(async () => {
+                    const [nextScoreTft] = await Promise.all([
+                        cont.get_quiz_reward_tft(addr || ""),
+                    ]);
+                    if (cancelled) return;
+                    const normalizedScore = Number(nextScoreTft || 0);
+                    setScoreTft(normalizedScore);
+                    if (normalizedScore <= 0) {
+                        setRank(0);
+                        return;
+                    }
+                    const nextRank = await cont.get_rank(normalizedScore);
+                    if (!cancelled) {
+                        setRank(Number(nextRank || 0));
+                    }
+                })
                     .catch((error) => {
                         console.error("Dashboard rank load error:", error);
+                        throw error;
                     });
+                rankLoadPromise
+                    .then(() => finishScreenMetric({ success: true }))
+                    .catch((error) => finishScreenMetric({ success: false, error }));
             } catch (err) {
                 console.error("Dashboard load error:", err);
                 if (!cancelled) {
@@ -92,6 +114,7 @@ function Dashboard() {
                     setScoreTft(0);
                     setQuizTotal(0);
                     setUserData(["", "", 0, false]);
+                    finishScreenMetric({ success: false, error: err });
                 }
             } finally {
                 if (!cancelled) {

@@ -3,6 +3,7 @@ import { Contracts_MetaMask } from "../../contract/contracts";
 import { getCourseEnhancementSnapshot } from "../../utils/courseEnhancements";
 import { syncRewardPayoutLedgerFromServer } from "../../utils/rewardPayoutLedger";
 import { convertTftToPoint, normalizeTftAmount } from "../../utils/quizRewardRate";
+import { beginScreenLoadBenchmark } from "../../utils/performanceBenchmark";
 import "./ranking.css";
 
 function Ranking() {
@@ -18,13 +19,28 @@ function Ranking() {
 
     useEffect(() => {
         async function loadData() {
+            const screenMetric = beginScreenLoadBenchmark({
+                screenName: "Ranking",
+                route: "/ranking",
+                cacheState: "unknown",
+            });
+            let metricWalletAddress = "";
+            let metricSuccess = true;
+            let metricError = null;
+
             try {
                 await syncRewardPayoutLedgerFromServer().catch(() => []);
                 const addr = await cont.get_address();
+                metricWalletAddress = addr || "";
                 setMyAddress(addr);
 
                 // 全生徒の成績を取得（学生のアドレスとスコア）
-                const studentResults = await cont.get_results();
+                const studentResults = await screenMetric.measureBlockchain(() => cont.get_results());
+                const resultCount = Array.isArray(studentResults) ? studentResults.length : 0;
+                screenMetric.setContext({
+                    student_count: resultCount,
+                    ranking_count: resultCount,
+                });
                 
                 if (studentResults && studentResults.length > 0) {
                     // スコアでソート（降順）
@@ -61,8 +77,15 @@ function Ranking() {
                 );
             } catch (err) {
                 console.error("Ranking load error:", err);
+                metricSuccess = false;
+                metricError = err;
             } finally {
                 setLoading(false);
+                screenMetric.finish({
+                    success: metricSuccess,
+                    error: metricError,
+                    walletAddress: metricWalletAddress,
+                });
             }
         }
         loadData();
