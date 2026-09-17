@@ -58,6 +58,7 @@ const Ranking = lazy(() => import("./pages/ranking/ranking"));
 const Notifications = lazy(() => import("./pages/notifications/notifications"));
 const Live_page = lazy(() => import("./pages/live/live"));
 const Benchmark = lazy(() => import("./pages/benchmark/benchmark"));
+const AnswerRunner = lazy(() => import("./pages/benchmark/answer_runner"));
 
 function RouteFallback() {
     useEffect(() => {
@@ -260,6 +261,7 @@ function AppRoutes({ cont }) {
                             <Route path="/investment_page/:id" element={<Investment_page url="investment_page" cont={cont} />} />
                             <Route path="/live" element={<Live_page url="live" cont={cont} />} />
                             <Route path="/benchmark" element={<Benchmark />} />
+                            <Route path="/benchmark/answer-runner" element={<AnswerRunner />} />
                             <Route path="/" element={<Navigate replace to="/dashboard" />} />
                         </Routes>
                     </main>

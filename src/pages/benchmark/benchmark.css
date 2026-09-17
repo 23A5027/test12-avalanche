@@ -55,6 +55,19 @@
     overflow-wrap: anywhere;
 }
 
+.benchmark-link-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    text-decoration: none;
+}
+
+.benchmark-link-button:hover {
+    color: #0f172a;
+    text-decoration: none;
+}
+
 .benchmark-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);

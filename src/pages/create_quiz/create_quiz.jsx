@@ -16,6 +16,11 @@ import { createDefaultQuizContentMeta, withQuizContentMeta } from "../../utils/q
 import { appendColoredText } from "../../utils/quizEditorHelpers";
 import { savePendingCreatedQuiz } from "../../utils/pendingCreatedQuizzes";
 import { normalizeCreatedQuizKey, saveCreatedQuiz } from "../../utils/liveSignalApi";
+import {
+    BENCHMARK_QUIZ_END_NUMBER,
+    BENCHMARK_QUIZ_START_NUMBER,
+    createBenchmarkQuizPayloads,
+} from "../../utils/benchmarkQuizPlan";
 import "./create_quiz.css";
 
 const CREATE_QUIZ_DRAFT_KEY = "create_quiz_form_v1";
@@ -53,6 +58,15 @@ function Create_quiz() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [batchQuizzes, setBatchQuizzes] = useState([]);
     const [batchEditQuizId, setBatchEditQuizId] = useState("");
+    const [batchProgress, setBatchProgress] = useState({
+        status: "idle",
+        total: 0,
+        success: 0,
+        skipped: 0,
+        failedTitle: "",
+        nextTitle: "",
+        message: "",
+    });
 
     const Contract = useMemo(() => new Contracts_MetaMask(), []);
 
@@ -303,30 +317,142 @@ function Create_quiz() {
         });
     };
 
+    const getCurrentQuizTitles = async () => {
+        const titles = new Set();
+        const quizLength = Number(await Contract.get_quiz_lenght(quiz_address));
+        const ids = Array.from({ length: Math.max(0, quizLength) }, (_, index) => index);
+        const settled = await Promise.allSettled(
+            ids.map((id) => Contract.get_quiz_simple(id, quiz_address))
+        );
+        settled.forEach((result) => {
+            if (result.status !== "fulfilled") return;
+            const titleValue = String(result.value?.[2] || "").trim();
+            if (titleValue) {
+                titles.add(titleValue);
+            }
+        });
+        return titles;
+    };
+
     const publishBatchQuizzes = async () => {
         if (isSubmitting || batchQuizzes.length === 0) return;
         setIsSubmitting(true);
+        const initialTotal = batchQuizzes.length;
+        let successCount = 0;
+        let skippedCount = 0;
+        let currentTitle = "";
+        setBatchProgress({
+            status: "running",
+            total: initialTotal,
+            success: 0,
+            skipped: 0,
+            failedTitle: "",
+            nextTitle: batchQuizzes[0]?.title || "",
+            message: "current Quiz contractの既存Quizを確認しています。",
+        });
         try {
             const remaining = [...batchQuizzes];
             const createdIds = [];
+            const existingTitles = await getCurrentQuizTitles();
             while (remaining.length > 0) {
                 const nextQuiz = remaining[0];
+                currentTitle = nextQuiz.title;
+                if (existingTitles.has(String(nextQuiz.title || "").trim())) {
+                    skippedCount += 1;
+                    remaining.shift();
+                    setBatchQuizzes([...remaining]);
+                    setBatchProgress({
+                        status: "running",
+                        total: initialTotal,
+                        success: successCount,
+                        skipped: skippedCount,
+                        failedTitle: "",
+                        nextTitle: remaining[0]?.title || "",
+                        message: `${nextQuiz.title} はcurrent Quiz contractに存在するためスキップしました。`,
+                    });
+                    continue;
+                }
+                setBatchProgress({
+                    status: "running",
+                    total: initialTotal,
+                    success: successCount,
+                    skipped: skippedCount,
+                    failedTitle: "",
+                    nextTitle: nextQuiz.title,
+                    message: `${nextQuiz.title} を作成中です。MetaMaskで確認してください。`,
+                });
                 const createdQuizId = await createQuizFromPayload(nextQuiz);
                 createdIds.push(createdQuizId);
+                existingTitles.add(String(nextQuiz.title || "").trim());
+                successCount += 1;
                 remaining.shift();
                 setBatchQuizzes([...remaining]);
+                setBatchProgress({
+                    status: "running",
+                    total: initialTotal,
+                    success: successCount,
+                    skipped: skippedCount,
+                    failedTitle: "",
+                    nextTitle: remaining[0]?.title || "",
+                    message: `${nextQuiz.title} のtransactionが確定しました。`,
+                });
             }
             clearDraft(CREATE_QUIZ_BATCH_DRAFT_KEY);
+            setBatchProgress({
+                status: "done",
+                total: initialTotal,
+                success: successCount,
+                skipped: skippedCount,
+                failedTitle: "",
+                nextTitle: "",
+                message: `一括出題が完了しました。新規作成 ${successCount} 件、既存スキップ ${skippedCount} 件。`,
+            });
             if (createdIds.length > 0) {
                 clearCreateQuizDraft();
                 navigate("/list_quiz");
             }
         } catch (error) {
             console.error("Failed to publish batch quizzes", error);
+            setBatchProgress({
+                status: "paused",
+                total: initialTotal,
+                success: successCount,
+                skipped: skippedCount,
+                failedTitle: currentTitle,
+                nextTitle: currentTitle || batchQuizzes[0]?.title || "",
+                message: error?.shortMessage || error?.message || "一括出題の途中で停止しました。残りの問題だけ再開できます。",
+            });
             alert(error?.shortMessage || error?.message || "一括出題の途中で失敗しました。残っている問題だけ続きから再実行できます。");
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const prepareBenchmarkBatchQuizzes = ({
+        startNumber = BENCHMARK_QUIZ_START_NUMBER,
+        endNumber = BENCHMARK_QUIZ_END_NUMBER,
+    } = {}) => {
+        if (isSubmitting) return;
+        const rangeLabel = startNumber === endNumber
+            ? `Benchmark Test Quiz ${String(startNumber).padStart(2, "0")}`
+            : `Benchmark Test Quiz ${String(startNumber).padStart(2, "0")}〜${String(endNumber).padStart(2, "0")}`;
+        if (batchQuizzes.length > 0) {
+            const shouldReplace = window.confirm(`現在の一括出題リストを${rangeLabel}で置き換えます。よろしいですか？`);
+            if (!shouldReplace) return;
+        }
+
+        const startline = getLocalizedDateTimeString(new Date(Date.now() - 5 * 60 * 1000));
+        setBatchQuizzes(createBenchmarkQuizPayloads(startline, { startNumber, endNumber }));
+        resetQuestionFields();
+        appendActivityLog(ACTION_TYPES.ADMIN_CREATE_QUIZ, {
+            page: "create_quiz",
+            title: rangeLabel,
+            answerType: 0,
+            reward: 0,
+            allowMultipleAnswers: false,
+            savedToBatch: true,
+            benchmarkBatchPrepared: true,
+        });
     };
 
     function getLocalizedDateTimeString(now = new Date()) {
@@ -546,6 +672,9 @@ function Create_quiz() {
                                         編集をやめる
                                     </button>
                                 ) : null}
+                                <button type="button" className="btn-ghost" disabled={isSubmitting} onClick={() => prepareBenchmarkBatchQuizzes()}>
+                                    Benchmark 33〜62を準備
+                                </button>
                                 <button
                                     type="button"
                                     className="btn-submit-quiz"
@@ -554,8 +683,42 @@ function Create_quiz() {
                                 >
                                     {isSubmitting ? "一括出題中..." : `🚀 ${batchQuizzes.length}問をまとめて出題`}
                                 </button>
+                                {batchProgress.status === "paused" && batchQuizzes.length > 0 ? (
+                                    <button
+                                        type="button"
+                                        className="btn-submit-quiz"
+                                        disabled={isSubmitting}
+                                        onClick={publishBatchQuizzes}
+                                    >
+                                        再開
+                                    </button>
+                                ) : null}
                             </div>
                         </div>
+
+                        {batchProgress.status !== "idle" ? (
+                            <div className={`batch-quiz-progress batch-quiz-progress--${batchProgress.status}`}>
+                                <div className="batch-quiz-progress-grid">
+                                    <div>
+                                        <span>成功</span>
+                                        <strong>{batchProgress.success} / {batchProgress.total}</strong>
+                                    </div>
+                                    <div>
+                                        <span>既存スキップ</span>
+                                        <strong>{batchProgress.skipped}</strong>
+                                    </div>
+                                    <div>
+                                        <span>次</span>
+                                        <strong>{batchProgress.nextTitle || "-"}</strong>
+                                    </div>
+                                    <div>
+                                        <span>失敗</span>
+                                        <strong>{batchProgress.failedTitle || "-"}</strong>
+                                    </div>
+                                </div>
+                                <div className="batch-quiz-progress-message">{batchProgress.message}</div>
+                            </div>
+                        ) : null}
 
                         {batchQuizzes.length === 0 ? (
                             <div className="batch-quiz-empty">まだ一括出題リストは空です。問題を入力して「出題リストへ追加」を押してください。</div>

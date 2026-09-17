@@ -46,6 +46,8 @@ const QUIZ_METRIC_CSV_HEADERS = [
     "rpc_url",
     "metric_type",
     "metric_name",
+    "runner_session_id",
+    "benchmark_number",
     "quiz_id",
     "attempt",
     "started_at",
@@ -191,6 +193,7 @@ function getNextQuizMetricAttempt(rows, row) {
         item.metric_name === row.metric_name
         && item.network === row.network
         && Number(item.chain_id) === Number(row.chain_id)
+        && String(item.runner_session_id || "") === String(row.runner_session_id || "")
     )).length + 1;
 }
 
@@ -203,6 +206,8 @@ function appendQuizBenchmarkMetric(row = {}) {
             rpc_url: row.rpc_url ?? rpc,
             metric_type: row.metric_type || QUIZ_METRIC_TYPE,
             metric_name: row.metric_name || row.metricName || "",
+            runner_session_id: row.runner_session_id || row.runnerSessionId || "",
+            benchmark_number: row.benchmark_number ?? row.benchmarkNumber ?? "",
             quiz_id: row.quiz_id ?? row.quizId ?? "",
             attempt: row.attempt,
             started_at: row.started_at || new Date().toISOString(),
@@ -223,6 +228,7 @@ function appendQuizBenchmarkMetric(row = {}) {
                 ? attemptNumber
                 : getNextQuizMetricAttempt(rows, baseRow),
             block_number: normalizeMetricValue(baseRow.block_number),
+            benchmark_number: normalizeMetricValue(baseRow.benchmark_number),
             quiz_count: normalizeMetricValue(baseRow.quiz_count),
             gas_used: normalizeMetricValue(baseRow.gas_used),
         };
@@ -318,6 +324,8 @@ function beginQuizOperationBenchmark({
     walletAddress = "",
     txHash = "",
     quizCount = "",
+    runnerSessionId = "",
+    benchmarkNumber = "",
 } = {}) {
     const startedAt = new Date().toISOString();
     const start = getNow();
@@ -342,6 +350,8 @@ function beginQuizOperationBenchmark({
 
             return appendQuizBenchmarkMetric({
                 metric_name: metricName,
+                runner_session_id: runnerSessionId,
+                benchmark_number: benchmarkNumber,
                 quiz_id: quizId,
                 started_at: startedAt,
                 duration_ms: getNow() - start,

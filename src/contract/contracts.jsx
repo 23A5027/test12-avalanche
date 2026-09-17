@@ -795,6 +795,87 @@ class Contracts_MetaMask {
         throw lastError;
     }
 
+    parseRpcNonce(value) {
+        if (typeof value === "number") return value;
+        if (typeof value === "bigint") return Number(value);
+        if (typeof value === "string" && /^0x/i.test(value)) {
+            return Number.parseInt(value, 16);
+        }
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    async getProviderNonce(provider, account, blockTag = "pending") {
+        const rawNonce = await this.providerRequestWithRetry(provider, {
+            method: "eth_getTransactionCount",
+            params: [account, blockTag],
+        }, 3, 300);
+        const nonce = this.parseRpcNonce(rawNonce);
+        if (!Number.isInteger(nonce) || nonce < 0) {
+            throw new Error(`${blockTag}_nonce_unavailable`);
+        }
+        return nonce;
+    }
+
+    async getPendingNonce(provider, account) {
+        return await this.getProviderNonce(provider, account, "pending");
+    }
+
+    rememberWriteNonce(account, nonce) {
+        if (!this.lastWriteNonceByAccount) {
+            this.lastWriteNonceByAccount = {};
+        }
+        this.lastWriteNonceByAccount[this.normalizeAddress(account)] = nonce;
+    }
+
+    getLastWriteNonce(account) {
+        const nonce = this.lastWriteNonceByAccount?.[this.normalizeAddress(account)];
+        return Number.isInteger(nonce) ? nonce : null;
+    }
+
+    rememberConfirmedNextNonce(account, nonce) {
+        if (!Number.isInteger(nonce) || nonce < 0) return;
+        if (!this.confirmedNextNonceByAccount) {
+            this.confirmedNextNonceByAccount = {};
+        }
+        const key = this.normalizeAddress(account);
+        const current = this.confirmedNextNonceByAccount[key];
+        this.confirmedNextNonceByAccount[key] = Number.isInteger(current)
+            ? Math.max(current, nonce)
+            : nonce;
+    }
+
+    getConfirmedNextNonce(account) {
+        const nonce = this.confirmedNextNonceByAccount?.[this.normalizeAddress(account)];
+        return Number.isInteger(nonce) ? nonce : null;
+    }
+
+    async waitForPendingNonceAdvance(provider, account, usedNonce, attempts = 10, baseDelayMs = 500) {
+        if (!Number.isInteger(usedNonce) || usedNonce < 0) return true;
+        const expectedNextNonce = usedNonce + 1;
+        let pendingNonce = null;
+        let latestNonce = null;
+        for (let attempt = 0; attempt < attempts; attempt += 1) {
+            pendingNonce = await this.getPendingNonce(provider, account);
+            latestNonce = await this.getProviderNonce(provider, account, "latest");
+            if (pendingNonce >= expectedNextNonce || latestNonce >= expectedNextNonce) {
+                this.rememberConfirmedNextNonce(account, expectedNextNonce);
+                return true;
+            }
+            await sleep(baseDelayMs * (attempt + 1));
+        }
+        throw new Error(`pending_nonce_not_advanced:${usedNonce}:${expectedNextNonce}:${pendingNonce}:${latestNonce}`);
+    }
+
+    async waitForLastWriteNonceAdvance(account, attempts = 10, baseDelayMs = 500) {
+        const provider = await this.getEthereumProviderReady();
+        if (!provider) {
+            throw new Error("ethereum_not_found");
+        }
+        const usedNonce = this.getLastWriteNonce(account);
+        return await this.waitForPendingNonceAdvance(provider, account, usedNonce, attempts, baseDelayMs);
+    }
+
     async ensureWalletWriteReady(provider, fallbackAccount = "") {
         const hasFreshCachedAccount = Boolean(readAccountCacheValue) && Date.now() < walletConnectionReadyUntil;
         if (hasFreshCachedAccount && !this.isMobileDevice()) {
@@ -1174,6 +1255,23 @@ class Contracts_MetaMask {
                 }
 
                 // Fee estimation override has been removed to rely on MetaMask's default.
+
+                const pendingNonce = await this.getPendingNonce(provider, writeAccount);
+                let latestNonce = null;
+                try {
+                    latestNonce = await this.getProviderNonce(provider, writeAccount, "latest");
+                } catch (nonceError) {
+                    console.log(nonceError);
+                }
+                const confirmedNextNonce = this.getConfirmedNextNonce(writeAccount);
+                const nonceCandidates = [
+                    pendingNonce,
+                    latestNonce,
+                    confirmedNextNonce,
+                ].filter((nonce) => Number.isInteger(nonce) && nonce >= 0);
+                const writeNonce = Math.max(...nonceCandidates);
+                writeConfig.nonce = writeNonce;
+                this.rememberWriteNonce(writeAccount, writeNonce);
 
                 return await walletClient.writeContract(writeConfig);
             } catch (error) {
@@ -2506,7 +2604,9 @@ class Contracts_MetaMask {
             if (!hash) {
                 throw new Error("create_quiz_rejected");
             }
+            const createNonce = this.getLastWriteNonce(account);
             res = await publicClient.waitForTransactionReceipt({ hash });
+            await this.waitForPendingNonceAdvance(provider, account, createNonce);
         } catch (err) {
             console.log(err);
             throw err;

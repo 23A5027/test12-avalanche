@@ -292,6 +292,58 @@
   gap: var(--space-3);
 }
 
+.batch-quiz-progress {
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px solid rgba(34, 211, 238, 0.22);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.batch-quiz-progress--paused {
+  border-color: rgba(251, 191, 36, 0.42);
+}
+
+.batch-quiz-progress--done {
+  border-color: rgba(34, 197, 94, 0.38);
+}
+
+.batch-quiz-progress-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.batch-quiz-progress-grid div {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  min-width: 0;
+  padding: var(--space-3);
+}
+
+.batch-quiz-progress-grid span {
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+}
+
+.batch-quiz-progress-grid strong {
+  color: #f8fafc;
+  display: block;
+  font-size: var(--font-size-base);
+  overflow-wrap: anywhere;
+}
+
+.batch-quiz-progress-message {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: var(--font-size-sm);
+  line-height: 1.7;
+}
+
 .batch-quiz-item {
   align-items: center;
   background: rgba(15, 23, 42, 0.32);
@@ -401,6 +453,10 @@
   .batch-quiz-header {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .batch-quiz-progress-grid {
+    grid-template-columns: 1fr;
   }
 
   .batch-quiz-item-controls {

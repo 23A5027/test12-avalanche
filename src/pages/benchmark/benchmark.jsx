@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { createPublicClient, http } from "viem";
 import { token_abi, quiz_abi } from "../../contract/contractClients";
 import { amoy } from "../../contract/network";
@@ -468,6 +469,9 @@ function Benchmark() {
                     <h1>応答速度測定</h1>
                 </div>
                 <div className="benchmark-actions">
+                    <Link className="btn-secondary-custom benchmark-link-button" to="/benchmark/answer-runner">
+                        回答Runner
+                    </Link>
                     <button type="button" className="btn-secondary-custom" onClick={downloadJson} disabled={!rows.length || isRunning}>
                         JSON保存
                     </button>
