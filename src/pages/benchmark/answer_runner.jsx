@@ -133,10 +133,11 @@ function formatNumber(value, digits = 2) {
     return Number(value).toFixed(digits);
 }
 
-function buildDuplicateSuccessSummary(rows) {
+function buildDuplicateSuccessSummary(rows, metricName = "") {
     const counts = new Map();
     rows.forEach((row) => {
         if (!row.success) return;
+        if (metricName && row.metric_name !== metricName) return;
         const key = `${row.metric_name}:${row.benchmark_number}`;
         const current = counts.get(key) || {
             metric_name: row.metric_name,
@@ -214,6 +215,10 @@ function AnswerRunner() {
         () => buildDuplicateSuccessSummary(sessionRows),
         [sessionRows]
     );
+    const duplicateConfirmationMetrics = useMemo(
+        () => buildDuplicateSuccessSummary(sessionRows, "answer_tx_confirmation"),
+        [sessionRows]
+    );
 
     const completedCount = targets.filter((target) => isTargetAnswered(target)).length;
     const pendingTargets = targets.filter((target) => !isTargetAnswered(target));
@@ -224,7 +229,7 @@ function AnswerRunner() {
         && confirmationStats.total === 30
         && confirmationStats.successCount === 30
         && confirmationStats.failureCount === 0
-        && duplicateSuccessMetrics.length === 0
+        && duplicateConfirmationMetrics.length === 0
     );
     const progressLabel = targets.length ? `${Math.min(completedCount + (currentTarget && !isTargetAnswered(currentTarget) ? 1 : 0), targets.length)} / ${targets.length}` : "0 / 0";
 
@@ -790,12 +795,12 @@ function AnswerRunner() {
                 </div>
                 <div className={formalCompletionReady ? "benchmark-success" : "benchmark-warning"}>
                     正式完了条件:
-                    answer_tx_confirmation count {confirmationStats.total} / success {confirmationStats.successCount} / failure {confirmationStats.failureCount} / 重複 {duplicateSuccessMetrics.length}
+                    answer_tx_confirmation count {confirmationStats.total} / success {confirmationStats.successCount} / failure {confirmationStats.failureCount} / 重複 {duplicateConfirmationMetrics.length}
                     {formalCompletionReady ? "。正式測定として集計可能です。" : "。30件成功・失敗0・重複0になるまで正式完了扱いにはしません。"}
                 </div>
                 {duplicateSuccessMetrics.length > 0 ? (
                     <div className="benchmark-warning">
-                        同一Benchmark番号に複数の成功metricがあります:
+                        補助指標を含む同一Benchmark番号の成功metric重複があります。正式完了条件ではanswer_tx_confirmationの重複だけを判定します:
                         {" "}
                         {duplicateSuccessMetrics.map((item) => (
                             `${item.metric_name} #${item.benchmark_number} (${item.count}件)`
